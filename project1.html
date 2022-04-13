@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title>Inner Page - Laura Bootstrap Template</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon" />
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Satisfy"
+      rel="stylesheet"
+    />
+
+    <!-- Vendor CSS Files -->
+    <link
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+    <link
+      href="assets/vendor/glightbox/css/glightbox.min.css"
+      rel="stylesheet"
+    />
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet" />
+
+    <!-- =======================================================
+  * Template Name: Laura - v4.7.0
+  * Template URL: https://bootstrapmade.com/laura-free-creative-bootstrap-theme/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  </head>
+
+  <body>
+    <!-- ======= Header ======= -->
+    <header
+      id="header"
+      class="fixed-top d-flex justify-content-center align-items-center"
+    >
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto" href="index.html">Home</a></li>
+          <li>
+            <a class="nav-link scrollto" href="index.html#about">About</a>
+          </li>
+          <li>
+            <a class="nav-link scrollto" href="index.html#projects">Projects</a>
+          </li>
+          <li>
+            <a class="nav-link scrollto" href="index.html#contact">Contact</a>
+          </li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav>
+      <!-- .navbar -->
+    </header>
+    <!-- End Header -->
+
+    <main id="main">
+      <!-- ======= Breadcrumbs ======= -->
+      <section class="breadcrumbs">
+        <div class="container">
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>Hangman Game Project</h2>
+            <ol>
+              <li><a href="index.html">Home</a></li>
+              <li>Hangman</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+      <!-- End Breadcrumbs -->
+
+      <section class="inner-page">
+        <section id="resume" class="resume">
+          <div class="container">
+            <div class="section-title">
+              <span>Hangman</span>
+              <h2>Hangman</h2>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-6">
+                <h3 class="resume-title">Project Summary</h3>
+                <div class="resume-item pb-0">
+                  <h4>The Spiel</h4>
+                  <p>
+                    <em
+                      >This project was all about revamping an old-age classic
+                      into a new-age thrill! Get to experience the epic highs
+                      and lows of a grade-school favorite, The Hangman Game, now
+                      available on web. Play alone, or with friends!</em
+                    >
+                  </p>
+                </div>
+
+                <h3 class="resume-title">The Application</h3>
+                <div class="resume-item">
+                  <h4>The Frameworks</h4>
+                  <h5>.NET &amp; MudBlazor</h5>
+
+                  <p>
+                    The game was locally hosted and asyncronous, achieved using
+                    websockets, with server-side logic in C#.
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <h3 class="resume-title">The Code</h3>
+                <div class="resume-item">
+                  <h4>The Fun</h4>
+                  <img
+                    src="assets/img/hmGIF.gif"
+                    class="img-fluid"
+                    alt="Showing the Hangman in Action"
+                  />
+
+                  <ul>
+                    <li>Players log in to an account</li>
+                    <li>
+                      Player guesses a letter; game handles non-alphebetic
+                      guesses. Game reveals correct guesses or adds hangman
+                      piece
+                    </li>
+                    <li>Game shows if player wins or loses</li>
+                    <li>
+                      Game displays high-scored board using player's username
+                      and score
+                    </li>
+                  </ul>
+                </div>
+                <div class="resume-item">
+                  <h4>Snippets</h4>
+                  <h5>Logic: Guessing</h5>
+
+                  <pre>
+private void GuessLetter(){
+    if (string.IsNullOrEmpty(letter) || int.TryParse(letter, out _ )) return;
+
+    if (allGuesses.Contains(char.Parse(letter)))
+    {
+        return;
+    }
+    allGuesses.Add(char.Parse(letter));
+
+    counter++;
+    if (currentWord.Contains(letter, StringComparison.CurrentCultureIgnoreCase)){
+        int position = 0;
+        var replacement = underlines.ToCharArray();
+
+        while (true){
+            position = currentWord.IndexOf(letter, position, StringComparison.CurrentCultureIgnoreCase);
+            if (position > -1){
+                replacement[1 + (3 * position)] = char.Parse(letter);
+            } else{
+                break;
+            }
+            position++;
+        }
+        underlines = string.Join("",replacement);
+
+        if (!(underlines.Contains("-", StringComparison.CurrentCultureIgnoreCase))){
+            //the game was won
+            letter = "";
+            HangmanDb.Highscores.Add(new Highscore { Username = @Accessor.HttpContext.User.Identity.Name, Score = counter });
+            HangmanDb.SaveChanges();
+            ShowImage(12);
+            NewGame();
+        }
+    } else{
+        //guess was not in answer
+        wrongGuesses.Add(char.Parse(letter));
+        wrongletters = string.Join(" ", wrongGuesses);
+        IncrementGuess();
+    }
+}
+                    </pre
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+    <!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+      <div class="container">
+        <h3>Terra Tretter</h3>
+        <p>
+          I'm a programmer, I write programs. I do not know how to fix your
+          laptop that won't turn on; except that I do because I am without
+          fault. Bring your tech to me, and I will release it from it's
+          struggle, for I am technology's GOD. It bends to MY will and MY will
+          alone
+        </p>
+        <div class="social-links">
+          <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+          <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+          <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+          <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+          <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        </div>
+        <div class="copyright">
+          &copy; Copyright <strong><span>Tretter</span></strong
+          >. Some Rights Reserved
+        </div>
+        <div class="credits">
+          <!-- All the links in the footer should remain intact. -->
+          <!-- You can delete the links only if you purchased the pro version. -->
+          <!-- Licensing information: https://bootstrapmade.com/license/ -->
+          <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/laura-free-creative-bootstrap-theme/ -->
+          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer -->
+
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/purecounter/purecounter.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
